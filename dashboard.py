@@ -14,7 +14,7 @@ def request_prediction(idClient) :
                         data=json.dumps({'idClient': idClient}),
                         headers={"Content-Type": "application/json"})
     
-    return request.json()
+    return request.json()['resultat']
 
 # Données       
 df = pd.read_csv('dataReduced.csv')
@@ -36,8 +36,7 @@ with tab1:
     
     if predict_btn:
         data = idClient
-        #pred = request_prediction(idClient)
-        pred = res['resultat']   
+        pred = request_prediction(idClient)
     
     col1, col2, col3 = st.columns([2, 1, 6])
 
@@ -47,7 +46,7 @@ with tab1:
         value = pred
         fig = go.Figure(go.Indicator(
         domain = {'x': [0, 1], 'y': [0, 1]},
-        value = value,
+        value = value * 100,
         mode = "gauge+number",
         gauge = {'axis': {'range': [None, 100]},
              'steps' : [
@@ -75,10 +74,10 @@ with tab1:
     with st.container(): 
         # metrics
         st.subheader('Decision')
-        if value >70:
-            decision = "prêt accordé"
-        else :
+        if value > 0.70:
             decision = "prêt refusé"
+        else :
+            decision = "prêt accordé"
         st.metric(label = '.',value = decision)
         
 # -----------------------------------------------------------------------
