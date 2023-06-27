@@ -32,12 +32,12 @@ with tab1:
     idClient = st.number_input('Identifiant client', min_value=0, step=1, value=263934)
 
     predict_btn = st.button('Prédire')   
-    pred = 0
+    pred = request_prediction(idClient)
     
     if predict_btn:
         data = idClient
         pred = request_prediction(idClient)
-        pred = res['resultat']   
+        #pred = res['resultat']   
     
     col1, col2, col3 = st.columns([2, 1, 6])
 
